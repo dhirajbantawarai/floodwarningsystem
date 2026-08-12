@@ -1,0 +1,33 @@
+# =========================
+# Large datasets - NEVER PUSH
+# =========================
+data/
+
+# Python virtual environment
+.venv/
+venv/
+
+# NeuralHydrology training outputs
+runs/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+
+# Old duplicate custom files
+custom_files/

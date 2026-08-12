@@ -1,0 +1,96 @@
+experiment_name: camels_gbv2_gw_smoke_test
+
+# Basin files
+train_basin_file: basin_lists/smoke_test_1_basin.txt
+validation_basin_file: basin_lists/smoke_test_1_basin.txt
+test_basin_file: basin_lists/smoke_test_1_basin.txt
+
+# Same temporal split used in the supervisor notebook
+train_start_date: 01/10/1970
+train_end_date: 30/09/2002
+
+validation_start_date: 01/10/2002
+validation_end_date: 30/09/2012
+
+test_start_date: 01/10/2012
+test_end_date: 30/09/2022
+
+# Hardware
+device: cuda:0
+
+# Dataset
+dataset: camels_gbv2
+data_dir: data
+
+# Groundwater
+gw_data_frequency: monthly
+
+# Model
+model: cudalstm
+
+nan_handling_method: input_replacing
+nan_handling_pos_encoding_size: 0
+
+dynamic_inputs:
+  - [precipitation_cehgear]
+  - [temperature_haduk]
+  - [pet_hydrope]
+  - [gw_groundwater_level]
+
+
+dynamics_embedding:
+  type: fc
+  hiddens:
+    - 64
+  activation: tanh
+  dropout: 0.05
+
+head: regression
+output_activation: linear
+
+hidden_size: 64
+initial_forget_bias: 3
+output_dropout: 0.2
+
+# Prediction target
+target_variables:
+  - discharge_vol
+
+clip_targets_to_zero:
+  - discharge_vol
+
+# Training
+optimizer: Adam
+loss: NSE
+
+learning_rate:
+  0: 0.001
+
+batch_size: 32
+epochs: 1
+
+clip_gradient_norm: 1
+
+seq_length: 365
+predict_last_n: 1
+
+# Keep this low for our Windows smoke test
+num_workers: 0
+
+# Validation
+validate_every: 1
+validate_n_random_basins: 1
+
+metrics:
+  - NSE
+  - KGE
+
+# Output
+base_run_dir: runs
+
+log_interval: 5
+log_tensorboard: true
+log_n_figures: 1
+
+save_weights_every: 1
+save_validation_results: true
