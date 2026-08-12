@@ -1,0 +1,113 @@
+experiment_name: camels_gbv2_gw_multibasin_10_haduk
+
+# Basin lists
+train_basin_file: basin_lists/multibasin_10.txt
+validation_basin_file: basin_lists/multibasin_10.txt
+test_basin_file: basin_lists/multibasin_10.txt
+
+# Time periods
+train_start_date: 01/10/1970
+train_end_date: 30/09/2002
+
+validation_start_date: 01/10/2002
+validation_end_date: 30/09/2012
+
+test_start_date: 01/10/2012
+test_end_date: 30/09/2022
+
+# Dataset
+dataset: camels_gbv2
+data_dir: data
+gw_data_frequency: monthly
+
+# GPU
+device: cuda:0
+
+# Model
+model: cudalstm
+
+# Restore supervisor-style attention
+nan_handling_method: attention
+nan_handling_pos_encoding_size: 0
+
+# Dynamic inputs
+dynamic_inputs:
+  - [precipitation_haduk]
+  - [temperature_haduk]
+  - [pet_hydrope]
+  - [gw_groundwater_level]
+
+# Static attributes
+static_attributes:
+  - area
+  - elev_mean
+  - sand_perc
+  - silt_perc
+  - clay_perc
+  - p_mean
+  - pet_mean
+
+statics_embedding:
+  type: fc
+  hiddens:
+    - 64
+  activation: tanh
+  dropout: 0.0
+
+dynamics_embedding:
+  type: fc
+  hiddens:
+    - 64
+  activation: tanh
+  dropout: 0.05
+
+head: regression
+output_activation: linear
+
+hidden_size: 64
+initial_forget_bias: 3
+output_dropout: 0.2
+
+# Target
+target_variables:
+  - discharge_vol
+
+clip_targets_to_zero:
+  - discharge_vol
+
+# Training
+optimizer: Adam
+loss: NSE
+
+learning_rate:
+  0: 0.001
+
+batch_size: 32
+
+# Only two epochs for local verification
+epochs: 2
+
+clip_gradient_norm: 1
+seq_length: 365
+predict_last_n: 1
+
+# Keep Windows/local test safe
+num_workers: 0
+
+# Validation
+validate_every: 1
+validate_n_random_basins: 10
+
+metrics:
+  - NSE
+  - KGE
+
+# Output
+base_run_dir: runs
+
+log_interval: 5
+log_tensorboard: true
+log_n_figures: 2
+
+save_weights_every: 1
+save_validation_results: true

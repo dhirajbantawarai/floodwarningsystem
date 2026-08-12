@@ -2,7 +2,7 @@ from pathlib import Path
 from neuralhydrology.datasetzoo.camelsgbv2 import (
     prepare_groundwater_training_context
     )
-CONFIG = Path("configs/smoke_test_gw.yml")
+CONFIG = Path("configs/multibasin_10_gw.yml")
 
 ctx = prepare_groundwater_training_context(
     CONFIG,
