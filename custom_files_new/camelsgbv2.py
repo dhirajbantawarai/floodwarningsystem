@@ -158,6 +158,37 @@ def _normalize_well_id(well_id: str) -> str:
 def _normalize_basin_id(basin_id: str) -> str:
     return str(basin_id).strip()
 
+def _qc_monthly_groundwater_spikes(gw_df, z_threshold=6.0):
+    """
+    Removes isolated extreme groundwater values
+    using a MAD-based robust z-score.
+    """
+
+    gw_df = gw_df.copy()
+    values = pd.to_numeric(gw_df["groundwater_level"], errors="coerce")
+
+    median = values.median()
+    mad = (values - median).abs().median()
+
+    if mad == 0 or pd.isna(mad):
+        return gw_df
+
+    robust_z = 0.6745 * (values - median) / mad
+
+    previous = values.shift(1)
+    next_value = values.shift(-1)
+
+    isolated = (
+        ((values > previous) & (values > next_value)) |
+        ((values < previous) & (values < next_value))
+    )
+
+    flagged = (robust_z.abs() >= z_threshold) & isolated
+
+    gw_df.loc[flagged, "groundwater_level"] = np.nan
+
+    return gw_df
+
 
 def _get_gw_fallback_max_distance_km() -> float | None:
     raw_value = os.getenv('NH_GW_FALLBACK_MAX_DISTANCE_KM', str(DEFAULT_GW_FALLBACK_MAX_DISTANCE_KM)).strip()
@@ -744,8 +775,8 @@ def load_camels_gb_v2_timeseries(data_dir: Path,
 
                 # If monthly data, upsample to daily using linear interpolation
                 if is_monthly:
+                    gw_df = _qc_monthly_groundwater_spikes(gw_df)
                     gw_df = gw_df.resample('D').interpolate(method='linear')
-
                 # Local Z-Score normalization (standardized anomaly) per well
                 if 'groundwater_level' in gw_df.columns:
                     if train_start_date and train_end_date:
