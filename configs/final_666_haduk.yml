@@ -1,4 +1,4 @@
-experiment_name: final_666_haduk.yml
+experiment_name: final_666_haduk
 
 # Basin lists
 train_basin_file: basin_lists/final_basins.txt

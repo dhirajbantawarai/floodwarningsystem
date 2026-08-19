@@ -31,3 +31,11 @@ Thumbs.db
 
 # Old duplicate custom files
 custom_files/
+
+# Model backups / large generated GNN files
+model_backups/
+outputs/final_evaluation/
+outputs/gnn_model.pt
+outputs/gnn_normalized_model.pt
+outputs/gnn_neuralhydrology_outputs.csv
+outputs/gnn_test_predictions.csv

@@ -2,8 +2,11 @@ import os
 import shutil
 import site
 
-# Location of your supervisor-provided custom files
-custom_dir = r"C:\P\floodwarningsys\custom_files_new"
+# Location of supervisor-provided custom files
+
+#custom_dir = r"C:\P\floodwarningsys\custom_files_new"
+
+custom_dir = os.path.join(os.path.dirname(__file__), "custom_files_new")
 
 site_packages_dirs = site.getsitepackages()
 

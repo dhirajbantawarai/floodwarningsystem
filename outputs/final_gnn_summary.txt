@@ -1,0 +1,15 @@
+FINAL HYBRID MODEL RESULTS
+
+NeuralHydrology median NSE: 0.846202
+NeuralHydrology + Normalized GNN median NSE: 0.854862
+
+Basins evaluated: 645
+Basins improved by GNN: 463
+
+GNN structure:
+- 666 basin nodes
+- 5 nearest neighbours per basin
+- 3330 graph edges
+- 2-layer GCN
+- Residual correction approach
+- Basin-wise normalization using training-period statistics
