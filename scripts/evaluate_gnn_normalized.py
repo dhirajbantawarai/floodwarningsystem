@@ -129,6 +129,7 @@ with torch.no_grad():
         for i, basin in enumerate(basins):
 
             rows.append({
+                "date": date,
                 "basin": basin,
                 "observed": observed[i],
                 "nh_prediction": nh_pred[i],
@@ -138,6 +139,10 @@ with torch.no_grad():
 
 results = pd.DataFrame(rows)
 
+results.to_csv(
+    "outputs/gnn_normalized_test_predictions.csv",
+    index=False
+)
 
 # NSE
 def nse(obs, pred):

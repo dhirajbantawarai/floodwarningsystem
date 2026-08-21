@@ -39,3 +39,7 @@ outputs/gnn_model.pt
 outputs/gnn_normalized_model.pt
 outputs/gnn_neuralhydrology_outputs.csv
 outputs/gnn_test_predictions.csv
+
+# Large generated flood prediction files
+outputs/gnn_normalized_test_predictions.csv
+outputs/flood_warning_status.csv
