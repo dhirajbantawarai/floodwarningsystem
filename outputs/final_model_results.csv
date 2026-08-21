@@ -1,0 +1,5 @@
+Metric,NeuralHydrology,NH + GNN,Better Model
+NSE,0.8462,0.8549,NH + GNN
+KGE,0.7877,0.8346,NH + GNN
+RMSE,1.3333,1.2991,NH + GNN
+MAE,0.627,0.6392,NeuralHydrology
