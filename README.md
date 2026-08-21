@@ -589,3 +589,43 @@ This project is an **academic and research prototype**.
 The flood warning levels produced by this system are based on historical statistical discharge thresholds.
 
 They should **not be interpreted as official flood warnings or used for emergency decision-making**.
+
+
+## ☁️ Kaggle Training
+
+The full NeuralHydrology training experiment was performed using a Kaggle GPU environment.
+
+### Training Setup
+
+- Kaggle Notebook
+- NVIDIA Tesla T4 GPU
+- NeuralHydrology 1.13.0
+- PyTorch with CUDA
+- 666 CAMELS-GB catchments
+- 6 training epochs
+
+The final NeuralHydrology checkpoint from epoch 6 was used for evaluation and for generating predictions for the downstream GNN model.
+
+### NeuralHydrology Test Results
+
+```text
+Valid NSE catchments: 662
+Valid KGE catchments: 662
+
+Median NSE: 0.8357
+Median KGE: 0.7946
+
+NSE > 0.0: 660
+NSE > 0.5: 649
+NSE > 0.7: 589
+```
+
+The resulting NeuralHydrology predictions were exported and later used by the Graph Neural Network for spatial residual correction.
+
+### Training Notebook
+
+The Kaggle training notebook is included in this repository:
+
+[`notebooks/flood.ipynb`](notebooks/flood.ipynb)
+
+The large CAMELS-GB dataset and trained model checkpoints are not stored in this GitHub repository because of their size.
